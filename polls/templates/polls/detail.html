@@ -1,0 +1,9 @@
+<h1>{{ question.question_text }}</h1>
+<!-- question을 넘겨받고, question 내의 question_text를 제목으로 보여준다 -->
+<ul>
+  {% for choice in question.choice_set.all %}
+  <!-- question을 외래키(ForeignKey)로 받는 choice들을 모두 가져온다 -->
+  <li>{{ choice.choice_text }}</li>
+  <!-- 받아온 choice들을 리스트에 하나씩 넣어준다 -->
+  {% endfor %}
+</ul>

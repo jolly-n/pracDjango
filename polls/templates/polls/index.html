@@ -1,0 +1,14 @@
+<!-- 뷰로 부터 context를 받아와 리스트를 만들고 클라이언트에게 보여준다 -->
+{% if latest_question_list %}
+<ul>
+  {% for question in latest_question_list %}
+  <li>
+    <a href="{% url 'polls:detail' question.id %}"
+      >{{ question.question_text }}</a
+    >
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>No polls are available.</p>
+{% endif %}
