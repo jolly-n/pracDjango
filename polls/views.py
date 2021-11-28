@@ -9,12 +9,12 @@ def index(request):
     # 1
     # return HttpResponse("Hello, world. You're at the polls index.")  # index view가 호출되면 클라이언트에게 "Hello, wold-"라는 respose를 반환해준다
 
-    # 2
+    # 2. 뷰에 기능넣기
     # latest_question_list = Question.objects.order_by('-pub_date')[:5]  # Question 데이터 중 출판일자(pub-date)를 정렬하여 5개까지 가져오고,
     # output = ', '.join([q.question_text for q in latest_question_list])  # (,)로 연결하여 str으로 반환해준다
     # return HttpResponse(output)
 
-    # 3
+    # 3. 템플릿 분리하기
     # latest_question_list = Question.objects.order_by('-pub_date')[:5]
     # template = loader.get_template('polls/index.html')  # polls/index.html 템플릿을 불러온다
     # context = {
@@ -22,23 +22,23 @@ def index(request):
     # }
     # return HttpResponse(template.render(context, request))
 
-    # 4
+    # 4. render() shortcuts 사용하기
     latest_question_list = Question.objects.order_by('-pub_date')[:5]
     context = {'latest_question_list': latest_question_list}
     return render(request, 'polls/index.html', context)
 
 def detail(request, question_id):
-    # (1) 
+    # 1 
     # return HttpResponse("You're looking at question %s." % question_id)
 
-    # (2) 404 에러 만들기
+    # 2. 404 에러 만들기
     # try:
     #     question = Question.objects.get(pk=question_id)
     # except Question.DoesNotExist:
     #     raise Http404("Question does not exist")  # 없는 데이터를 조회하면 예외메세지를 반환해준다
     # return render(request, 'polls/detail.html', {'question': question})
 
-    # (3) get_object_or_404 단축기능 사용하기
+    # 3. get_object_or_404 shortcuts 사용하기
     question = get_object_or_404(Question, pk=question_id)
     return render(request, 'polls/detail.html', {'question': question})
 
