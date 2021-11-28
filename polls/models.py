@@ -13,7 +13,9 @@ class Question(models.Model):
         return self.question_text
 
     def was_published_recently(self):
-        return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
+        # 버그 수정
+        now = timezone.now()
+        return now - datetime.timedelta(days=1) <= self.pub_date <= now  # question 생성날짜가 미래로 넘어가지 않도록 현재날짜를 두고 최근기준을 하루로 잡아둠
 
 
 class Choice(models.Model):

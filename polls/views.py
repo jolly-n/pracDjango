@@ -3,6 +3,7 @@ from django.template import loader
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.views import generic
+from django.utils import timezone
 
 from .models import Question, Choice
 
@@ -38,8 +39,18 @@ class IndexView(generic.ListView):
     context_object_name = 'latest_question_list'
 
     def get_queryset(self):
-        """Return the last five published questions."""
-        return Question.objects.order_by('-pub_date')[:5]
+        # 1
+        # """Return the last five published questions."""
+        # return Question.objects.order_by('-pub_date')[:5]
+
+        # 2. 뷰 테스트 - 미래의 생성날짜를 가진 question이 안나오도록 수정
+        """
+        Return the last five published questions (not including those set to be
+        published in the future).
+        """
+        return Question.objects.filter(
+            pub_date__lte=timezone.now()  # __lte(less than equal):장고에서 제공되는 필터조건, 현재시간보다 작거나 같은 데이터를 가져옴
+        ).order_by('-pub_date')[:5]
 
 
 # def detail(request, question_id):
@@ -60,6 +71,12 @@ class IndexView(generic.ListView):
 class DetailView(generic.DetailView):
     model = Question
     template_name = 'polls/detail.html'
+    #  Detail 뷰 테스트 추가
+    def get_queryset(self):
+        """
+        Excludes any questions that aren't published yet.
+        """
+        return Question.objects.filter(pub_date__lte=timezone.now())
 
 
 # def results(request, question_id):
